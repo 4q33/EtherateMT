@@ -129,15 +129,15 @@ int main(int argc, char *argv[]) {
     if (eth.app_opt.verbose)
         printf("Main thread pid is %" PRId32 ".\n", getpid());
 
-    
     // Fill the test frame buffer with random data
-    if (getrandom(eth.frm_opt.tx_buffer, eth.frm_opt.frame_sz, 0)
-        != eth.frm_opt.frame_sz)
-    {
-        perror("Can't generate random frame data");
-        exit(EXIT_FAILURE);
+    if (eth.frm_opt.custom_frame != 1) {
+        if (getrandom(eth.frm_opt.tx_buffer, eth.frm_opt.frame_sz, 0)
+            != eth.frm_opt.frame_sz)
+        {
+            perror("Can't generate random frame data");
+            exit(EXIT_FAILURE);
+        }
     }
-
 
     // Create a copy of the program settings for each worker thread.
     eth.thd_opt = calloc(sizeof(struct thd_opt), eth.app_opt.thd_nr);
